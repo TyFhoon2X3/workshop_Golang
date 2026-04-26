@@ -2,6 +2,13 @@ package main
 
 import "fmt"
 
+type Subject struct {
+	Name   string
+	Score  int
+	Credit float64
+	Grade  string
+}
+
 func main() {
 	result := grade()
 	fmt.Println(result)
@@ -10,31 +17,40 @@ func main() {
 func calculateGrade(score int) string {
 	if score >= 80 {
 		return "A"
+	} else if score >= 75 {
+		return "B+"
 	} else if score >= 70 {
 		return "B"
+	} else if score >= 65 {
+		return "C+"
 	} else if score >= 60 {
 		return "C"
+	} else if score >= 55 {
+		return "D+"
 	} else if score >= 50 {
 		return "D"
 	} else {
 		return "F"
-
 	}
 }
-func calculateCredit(score int, credit int) int {
+func calculateCredit(score int, credit float64) float64 {
 	if score >= 80 {
-		return credit * 4
+		return credit * 4.0
+	} else if score >= 75 {
+		return credit * 3.5
 	} else if score >= 70 {
-		return credit * 3
+		return credit * 3.0
+	} else if score >= 65 {
+		return credit * 2.5
 	} else if score >= 60 {
-		return credit * 2
+		return credit * 2.0
+	} else if score >= 55 {
+		return credit * 1.5
 	} else if score >= 50 {
-		return credit * 1
+		return credit * 1.0
 	} else {
-		return 0
-
+		return 0.0
 	}
-
 }
 
 func grade() string {
@@ -43,39 +59,42 @@ func grade() string {
 	fmt.Print("Input number of subjects: ")
 	var subject int
 	fmt.Scan(&subject)
-	names := []string{}
-	scores := []int{}
-	GradeType := []string{}
-	creadits := []int{}
-	totalCredits := []int{}
+	var subjects []Subject
+	var totalCredits float64
+	var totalPoints float64
 
 	for i := 0; i < subject; i++ {
 		var name string
 		var score int
-		var credit int
-		fmt.Print("Input subject name: ")
+		var credit float64
+		fmt.Printf("Enter name of subject %d: ", i+1)
 		fmt.Scan(&name)
-		fmt.Printf("Input score for %s: ", name)
+		fmt.Printf("Enter score for subject %d: ", i+1)
 		fmt.Scan(&score)
-		fmt.Printf("Input credit for %s: ", name)
+		fmt.Printf("Enter credit for subject %d: ", i+1)
 		fmt.Scan(&credit)
 
-		charGrade := calculateGrade(score)
-		totalCredit := calculateCredit(score, credit)
-		names = append(names, name)
-		scores = append(scores, score)
-		GradeType = append(GradeType, charGrade)
-		totalCredits = append(totalCredits, totalCredit)
-		creadits = append(creadits, credit)
-
-		
-
+		sub := Subject{
+			Name:   name,
+			Score:  score,
+			Credit: credit,
+			Grade:  calculateGrade(score),
+		}
+		subjects = append(subjects, sub)
+		totalCredits += credit
+		totalPoints += calculateCredit(score, credit)
 	}
 
-	for i := 0; i < subject; i++ {
-		fmt.Printf("Subject %d: %-10s | Score: %d | Credit: %d | Grade: %s | Total Credit: %d\n", i+1, names[i], scores[i], creadits[i], GradeType[i], totalCredits[i])
-	}	
+	// Display results
+	fmt.Println("\n===== Results =====")
+	for _, sub := range subjects {
+		fmt.Printf("Subject: %s | Score: %d | Credit: %.0f | Grade: %s\n", sub.Name, sub.Score, sub.Credit, sub.Grade)
+	}
+
+	// Calculate GPA
+	gpa := totalPoints / totalCredits
+	fmt.Printf("\nTotal Credits: %.0f\n", totalCredits)
+	fmt.Printf("GPA: %.2f\n", gpa)
 
 	return "Process Completed Successfully"
-
 }
