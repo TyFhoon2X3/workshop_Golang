@@ -2,63 +2,48 @@ package main
 
 import "fmt"
 
-type member struct {
-	name         string
-	subname      string
-	age          int
-	saraly       float64
-	saralyYearly float64
-}
-
 func main() {
-	setPeplo()
-}
+    choice := 0
 
-func saralyYears(salary float64) float64 {
-	return salary * 12
-}
+    // ใช้ for ครอบไว้เพื่อให้โปรแกรมวนกลับมาเริ่มใหม่เสมอ
+    for {
+        fmt.Println("\n--- Main Menu ---")
+        fmt.Println("1: Square")
+        fmt.Println("2: Triangle")
+        fmt.Println("3: Exit Program") // เพิ่มทางเลือกสำหรับปิดโปรแกรม
+        fmt.Print("Select your choice: ")
+        fmt.Scan(&choice)
 
-func setPeplo() {
-	var size int
-	fmt.Print("Enter the size of the array: ")
-	fmt.Scan(&size)
+        switch choice {
+        case 1:
+            fmt.Println("Drawing Square...")
+            for i := 1; i <= 5; i++ {
+                for j := 1; j <= 5; j++ {
+                    fmt.Print("* ")
+                }
+                fmt.Println()
+            }
+            // เมื่อจบงานใน case 1 จะวนกลับไปที่ต้น loop for ทันที
 
-	var members []member
+        case 2:
+            fmt.Println("Drawing Triangle...")
+            for i := 1; i <= 5; i++ {
+                for j := 1; j <= i; j++ {
+                    fmt.Print("* ")
+                }
+                fmt.Println()
+            }
 
-	for i := 0; i < size; i++ {
-		var name string
-		var subname string
-		var age int
-		var saraly float64
-		fmt.Println()
-		fmt.Printf("Enter name of person %d: ", i+1)
-		fmt.Scan(&name, &subname)
-		fmt.Printf("Enter age for person %d: ", i+1)
-		fmt.Scan(&age)
-		fmt.Printf("Enter salary for person %d: ", i+1)
-		fmt.Scan(&saraly)
+        case 3:
+            fmt.Println("Exiting... Bye!")
+            return // คำสั่งนี้จะทำให้หลุดออกจากฟังก์ชัน main และจบโปรแกรม
 
-		members = append(members, member{
-			name:         name,
-			subname:      subname,
-			age:          age,
-			saraly:       saraly,
-			saralyYearly: saralyYears(saraly),
-		})
-		
-
-
-		// m := member{
-		// 	name:         name,
-		// 	subname:      subname,
-		// 	age:          age,
-		// 	saraly:       saraly,
-		// 	saralyYearly: saralyYears(saraly),
-		// }
-		// members = append(members, m)
-	}
-
-	for i, m := range members {
-		fmt.Printf("Person %d: %s %s | age: %d | salary: %.2f | salary_per_year: %.2f\n", i+1, m.name, m.subname, m.age, m.saraly, m.saralyYearly)
-	}
+        default:
+            // ถ้ากดเลขอื่นที่ไม่ใช่ 1, 2, 3
+            fmt.Println("-------------------------------")
+            fmt.Println("Invalid choice! Please try again.")
+            fmt.Println("-------------------------------")
+            // ไม่ต้องทำอะไรเพิ่ม ลูป for จะวนกลับไปถามใหม่ให้เอง
+        }
+    }
 }
